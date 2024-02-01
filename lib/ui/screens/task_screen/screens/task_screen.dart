@@ -22,9 +22,6 @@ class TaskScreen extends StatefulWidget {
 }
 
 class _TaskScreenState extends State<TaskScreen> with TickerProviderStateMixin {
-  late final AnimationController animationController;
-  final ValueNotifier<String> countryCodeNotifier =
-      ValueNotifier<String>('+20');
 
   void _onStateChangeListener(BuildContext context, TaskState state) {
     if (state.isError) {
@@ -51,13 +48,10 @@ class _TaskScreenState extends State<TaskScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    animationController = AnimationController(vsync: this);
   }
 
   @override
   void dispose() {
-    animationController.dispose();
-    countryCodeNotifier.dispose();
     super.dispose();
   }
 
@@ -65,7 +59,7 @@ class _TaskScreenState extends State<TaskScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return BlocProvider<TaskCubit>(
       lazy: false,
-      create: (_) => TaskCubit()..getList(),
+      create: (_) => TaskCubit()..init(),
       child: BlocConsumer<TaskCubit, TaskState>(
           listener: _onStateChangeListener,
           builder: (ctx, state) {
@@ -118,9 +112,9 @@ class _TaskScreenState extends State<TaskScreen> with TickerProviderStateMixin {
                             Expanded(
                               child: TabBarView(
                                 children: [
-                                  HotScreen(myList: cubit.myList),
-                                  NewScreen(myList: cubit.myList),
-                                  RisingScreen(myList: cubit.myList),
+                                  HotScreen(myList: cubit.myListHot),
+                                  NewScreen(myList: cubit.myListNew),
+                                  RisingScreen(myList: cubit.myListRising),
                                 ],
                               ),
                             ),

@@ -103,10 +103,10 @@ class _NewScreenState extends State<NewScreen> {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          myPlanData?.data?.name ?? "",
+                                          myPlanData?.data?.title ?? "",
                                           style:
                                           AppTextTheme.medTextSize.copyWith(
-                                            color: AppColors.red,
+                                            color: AppColors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -122,10 +122,9 @@ class _NewScreenState extends State<NewScreen> {
                                         children: [
                                           Expanded(
                                             child: Text(
-                                              myPlanData?.data?.link_flair_text??"",
+                                              myPlanData?.data?.selftext??"",
                                               style: AppTextTheme.smallTextSize.copyWith(
-                                                color: AppColors.green,
-                                                fontWeight: FontWeight.w500,
+                                                color: AppColors.appBarColor,
                                                 fontSize: 14,
                                               ),
                                             ),
@@ -147,8 +146,8 @@ class _NewScreenState extends State<NewScreen> {
                         }
                       },
                       isLoadingMore: cubit.state.isLoadingMoreResult,
-                      isNoMore: cubit.state.isNoMoreResult, nextPage: () {  },
-                      // nextPage: cubit.nextPage,
+                      isNoMore: cubit.state.isNoMoreResult,
+                      nextPage: cubit.nextNewPage,
                     ),
                   ),
                 ],

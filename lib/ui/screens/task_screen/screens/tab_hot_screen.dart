@@ -146,8 +146,8 @@ class _HotScreenState extends State<HotScreen> {
                         }
                       },
                       isLoadingMore: cubit.state.isLoadingMoreResult,
-                      isNoMore: cubit.state.isNoMoreResult, nextPage: () {  },
-                      // nextPage: cubit.nextPage,
+                      isNoMore: cubit.state.isNoMoreResult,
+                      nextPage: cubit.nextHotPage,
                     ),
                   ),
                 ],

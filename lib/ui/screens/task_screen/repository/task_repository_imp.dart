@@ -8,9 +8,31 @@ class TaskRepositoryImp extends TaskRepository {
   }
 
   @override
-  Future<Result<Failure,GeneralResponse>> getDataResponse() async {
+  Future<Result<Failure,GeneralResponse>> getHotDataResponse() async {
     try {
-      final result = await _remoteDataSource.guest();
+      final result = await _remoteDataSource.hotData();
+      return Success(result);
+    } catch (e, stacktrace) {
+      print("endPointError: $e || ${stacktrace.toString()}");
+      return Error(DioUtils.getDioExceptionMessage(e, stacktrace));
+    }
+  }
+
+  @override
+  Future<Result<Failure,GeneralResponse>> getNewDataResponse() async {
+    try {
+      final result = await _remoteDataSource.newData();
+      return Success(result);
+    } catch (e, stacktrace) {
+      print("endPointError: $e || ${stacktrace.toString()}");
+      return Error(DioUtils.getDioExceptionMessage(e, stacktrace));
+    }
+  }
+
+  @override
+  Future<Result<Failure,GeneralResponse>> getRisingDataResponse() async {
+    try {
+      final result = await _remoteDataSource.risingData();
       return Success(result);
     } catch (e, stacktrace) {
       print("endPointError: $e || ${stacktrace.toString()}");

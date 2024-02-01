@@ -9,7 +9,9 @@ class TaskCubit extends Cubit<TaskState> {
   static TaskCubit get(BuildContext context) => BlocProvider.of(context);
 
   late final TaskRepository _taskRepository;
-  final List<GeneralResponse?> _myList = [];
+  final List<GeneralResponse?> _myListHot = [];
+  final List<GeneralResponse?> _myListNew = [];
+  final List<GeneralResponse?> _myListRising = [];
 
   TaskCubit({
     TaskRepository? taskRepository,
@@ -17,11 +19,11 @@ class TaskCubit extends Cubit<TaskState> {
     _taskRepository = taskRepository ?? GetIt.I.get<TaskRepository>();
   }
 
-  Future getList() async {
+  Future getListHot() async {
     emit(const TaskState.loading());
 
     final response =
-    await _taskRepository.getDataResponse();
+    await _taskRepository.getHotDataResponse();
     response.when((error) {
       if (error.isInternetFailure) {
         emit(const TaskState.noInternet());
@@ -30,13 +32,12 @@ class TaskCubit extends Cubit<TaskState> {
       }
     }, (result) {
       print("mina:  ${result.data?.name}");
-      myList.clear();
-      myList.addAll(result.data!.children??[]);
+      myListHot.clear();
+      myListHot.addAll(result.data!.children??[]);
       emit(const TaskState.success());
     });
   }
-
-  Future nextPage() async {
+  Future nextHotPage() async {
     print("is next");
     if (state.isNoMoreResult || state.isLoadingMoreResult) {
       return;
@@ -46,7 +47,7 @@ class TaskCubit extends Cubit<TaskState> {
 
 
     final response =
-    await _taskRepository.getDataResponse();
+    await _taskRepository.getHotDataResponse();
     response.when((error) {
       if (error.isInternetFailure) {
         emit(const TaskState.noInternet());
@@ -55,14 +56,114 @@ class TaskCubit extends Cubit<TaskState> {
       }
     }, (result) {
       if (result.data!.children!.isNotEmpty) {
-        myList.addAll(result.data!.children??[]);
+        myListHot.addAll(result.data!.children??[]);
         emit(const TaskState.success());
       } else {
         emit(const TaskState.noMoreResult());
       }
     });
   }
-  List<GeneralResponse?> get myList => _myList;
 
+  Future getListRising() async {
+    emit(const TaskState.loading());
+
+    final response =
+    await _taskRepository.getRisingDataResponse();
+    response.when((error) {
+      if (error.isInternetFailure) {
+        emit(const TaskState.noInternet());
+      } else {
+        emit(TaskState.error(error));
+      }
+    }, (result) {
+      print("mina:  ${result.data?.name}");
+      myListRising.clear();
+      myListRising.addAll(result.data!.children??[]);
+      emit(const TaskState.success());
+    });
+  }
+  Future nextRisingPage() async {
+    print("is next");
+    if (state.isNoMoreResult || state.isLoadingMoreResult) {
+      return;
+    }
+
+    emit(const TaskState.loadingMoreResult());
+
+
+    final response =
+    await _taskRepository.getRisingDataResponse();
+    response.when((error) {
+      if (error.isInternetFailure) {
+        emit(const TaskState.noInternet());
+      } else {
+        emit(TaskState.error(error));
+      }
+    }, (result) {
+      if (result.data!.children!.isNotEmpty) {
+        myListRising.addAll(result.data!.children??[]);
+        emit(const TaskState.success());
+      } else {
+        emit(const TaskState.noMoreResult());
+      }
+    });
+  }
+
+
+  Future getListNew() async {
+    emit(const TaskState.loading());
+
+    final response =
+    await _taskRepository.getNewDataResponse();
+    response.when((error) {
+      if (error.isInternetFailure) {
+        emit(const TaskState.noInternet());
+      } else {
+        emit(TaskState.error(error));
+      }
+    }, (result) {
+      print("mina:  ${result.data?.name}");
+      myListNew.clear();
+      myListNew.addAll(result.data!.children??[]);
+      emit(const TaskState.success());
+    });
+  }
+  Future nextNewPage() async {
+    print("is next");
+    if (state.isNoMoreResult || state.isLoadingMoreResult) {
+      return;
+    }
+
+    emit(const TaskState.loadingMoreResult());
+
+
+    final response =
+    await _taskRepository.getNewDataResponse();
+    response.when((error) {
+      if (error.isInternetFailure) {
+        emit(const TaskState.noInternet());
+      } else {
+        emit(TaskState.error(error));
+      }
+    }, (result) {
+      if (result.data!.children!.isNotEmpty) {
+        myListNew.addAll(result.data!.children??[]);
+        emit(const TaskState.success());
+      } else {
+        emit(const TaskState.noMoreResult());
+      }
+    });
+  }
+
+
+  Future init() async {
+    await getListHot();
+     getListNew();
+     getListRising();
+  }
+
+  List<GeneralResponse?> get myListHot => _myListHot;
+  List<GeneralResponse?> get myListNew => _myListNew;
+  List<GeneralResponse?> get myListRising => _myListRising;
 
 }

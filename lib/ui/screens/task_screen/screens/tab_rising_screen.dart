@@ -103,10 +103,10 @@ class _RisingScreenState extends State<RisingScreen> {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          myPlanData?.data?.author_fullname ?? "",
+                                          myPlanData?.data?.title ?? "",
                                           style:
                                           AppTextTheme.medTextSize.copyWith(
-                                            color: AppColors.orangePrimaryWarm,
+                                            color: AppColors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -122,9 +122,9 @@ class _RisingScreenState extends State<RisingScreen> {
                                         children: [
                                           Expanded(
                                             child: Text(
-                                              myPlanData?.data?.url??"",
+                                              myPlanData?.data?.selftext??"",
                                               style: AppTextTheme.smallTextSize.copyWith(
-                                                color: AppColors.colorGrayDarker,
+                                                color: AppColors.appBarColor,
                                                 fontSize: 14,
                                               ),
                                             ),
@@ -146,8 +146,8 @@ class _RisingScreenState extends State<RisingScreen> {
                         }
                       },
                       isLoadingMore: cubit.state.isLoadingMoreResult,
-                      isNoMore: cubit.state.isNoMoreResult, nextPage: () {  },
-                      // nextPage: cubit.nextPage,
+                      isNoMore: cubit.state.isNoMoreResult,
+                      nextPage: cubit.nextRisingPage,
                     ),
                   ),
                 ],

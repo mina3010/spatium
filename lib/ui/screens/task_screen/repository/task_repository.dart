@@ -8,5 +8,7 @@ import 'package:get_it/get_it.dart';
 part 'task_repository_imp.dart';
 
 abstract class TaskRepository {
-  Future<Result<Failure, GeneralResponse>> getDataResponse();
+  Future<Result<Failure, GeneralResponse>> getHotDataResponse();
+  Future<Result<Failure, GeneralResponse>> getNewDataResponse();
+  Future<Result<Failure, GeneralResponse>> getRisingDataResponse();
 }
